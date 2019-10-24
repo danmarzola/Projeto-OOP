@@ -21,7 +21,7 @@ namespace Projeto_OOP
         }
         public static bool MainMenu()
         {
-            //Console.Clear();
+            Console.Clear();
             Console.WriteLine("Escolha uma das Funções do Sistema de Gerenciamente de Restaurante em C# do Danilo Marzola Cunha");
             Console.WriteLine("(1) Abrir um comanda vazia e alocar em uma mesa vazia");
             Console.WriteLine("(2) Lançar um item em uma comanda");
@@ -30,7 +30,7 @@ namespace Projeto_OOP
             Console.WriteLine("(5) Mostrar Cardapio");
             Console.WriteLine("(6) Mostrar Mesas Ocupadas");
             Console.WriteLine("(7) Mostrar Mesas Desocupadas");
-            Console.WriteLine("(8) Limpar Console");
+            Console.WriteLine("(8) Mostrar Comandas Abertas");
             Console.WriteLine("(9) Limpar Console");
             Console.WriteLine("(10) Encerrar Terminal");
             Console.Write("\r\nSelecione uma das opções usando um numero inteiro:");
@@ -58,6 +58,9 @@ namespace Projeto_OOP
                 case "7":
                     MostrarMesasDesocupadas();
                     return true;
+                case "8":
+                    MostrarComandasAbertas();
+                    return true;
                 case "9":
                     Console.Clear();
                     return true;
@@ -69,6 +72,7 @@ namespace Projeto_OOP
             void AbrirComanda()
             {
                 List<Comanda> ListaComandas = Service.GetComandas();
+                List<Mesa> ListaMesas = Service.GetMesas();
                 List<int> MesasOcupadas = new List<int>();
                 if (ListaComandas == null)
                 {
@@ -90,6 +94,14 @@ namespace Projeto_OOP
                 {
                     Console.Clear();
                     Console.WriteLine("Mesa já esta sendo utilizada em uma comanda em aberto!");
+                    Console.WriteLine("Pressione enter para voltar ao menu principal!");
+                    Console.ReadLine();
+                    return;
+                }else if(ListaMesas.Count < Int32.Parse(strlist[2]))
+                {
+                    Console.Clear();
+                    Console.WriteLine("Mesa não existe!");
+                    Console.WriteLine("Pressione enter para voltar ao menu principal!");
                     Console.ReadLine();
                     return;
                 }
@@ -102,7 +114,11 @@ namespace Projeto_OOP
                 List<Produto> ListaProdutos = Service.GetProdutos();
                 if (ListaComandas == null)
                 {
+                    Console.Clear();
                     Console.WriteLine("Não há comandas em aberto, tente criar uma primeiro!");
+                    Console.WriteLine("Pressione enter para voltar ao menu principal!");
+                    Console.ReadLine();
+                    return;
                 }
                 Console.WriteLine("Informe o ID da Comanda e o ID do Produto que deseja lançar");
                 Console.WriteLine("Formato: IDComanda, IDProduto");
@@ -110,12 +126,18 @@ namespace Projeto_OOP
                 //Fazer Condição de Proteção
                 if(ListaComandas.Count < Int32.Parse(strlist[0]))
                 {
+                    Console.Clear();
                     Console.WriteLine("ID não existe");
+                    Console.WriteLine("Pressione enter para voltar ao menu principal!");
                     Console.ReadLine();
                     return;
-                }else if(ListaProdutos[Int32.Parse(strlist[1]) - 1].Estoque < 1)
+                }
+                else if(ListaProdutos[Int32.Parse(strlist[1]) - 1].Estoque < 1)
                 {
+                    Console.Clear();
                     Console.WriteLine("Produto Esgotado!");
+                    Console.WriteLine("Pressione enter para voltar ao menu principal!");
+                    Console.ReadLine();
                     return;
                 }
                 ListaProdutos[Int32.Parse(strlist[1]) - 1].Estoque--;
@@ -142,6 +164,7 @@ namespace Projeto_OOP
                 //Fazer Condição de Proteção
                 if (ListaComandas.Count < Int32.Parse(strlist[0]))
                 {
+                    Console.Clear();
                     Console.WriteLine("ID não existe");
                     Console.WriteLine("Pressione enter para voltar ao menu principal!");
                     Console.ReadLine();
@@ -150,6 +173,7 @@ namespace Projeto_OOP
                 List<int> temp = ListaComandas[Int32.Parse(strlist[0]) - 1].Lancamentos;
                 if(temp.Count == 0)
                 {
+                    Console.Clear();
                     Console.WriteLine("Não itens nessa comanda!");
                     Console.WriteLine("Pressione enter para voltar ao menu principal!");
                     Console.ReadLine();
@@ -173,6 +197,7 @@ namespace Projeto_OOP
                 List<Comanda> ListaComandas = Service.GetComandas();
                 if (ListaComandas == null)
                 {
+                    Console.Clear();
                     Console.WriteLine("Não há comandas em aberto, tente criar uma primeiro!");
                     Console.WriteLine("Pressione enter para voltar ao menu principal!");
                     Console.ReadLine();
@@ -184,6 +209,7 @@ namespace Projeto_OOP
                 //Fazer Condição de Proteção
                 if (ListaComandas.Count < Int32.Parse(strlist[0]))
                 {
+                    Console.Clear();
                     Console.WriteLine("ID não existe");
                     Console.WriteLine("Pressione enter para voltar ao menu principal!");
                     Console.ReadLine();
@@ -201,6 +227,7 @@ namespace Projeto_OOP
                 foreach (Produto p in ListaProdutos) {
                     Console.WriteLine("ID: "+p.ID+ " | Nome: " +p.Nome+  " | Valor: "+p.Valor+ " | Descricao: " +p.Descricao+ " | Estoque: " +p.Estoque);
                 }
+                Console.WriteLine("Pressione enter para voltar ao menu principal!");
                 Console.ReadLine();
             }
             void MostrarMesasOcupada()
@@ -215,6 +242,7 @@ namespace Projeto_OOP
                         Console.WriteLine("IDMesa: " + p.IDmesa + " | Andar: " + ListaMesas[p.IDmesa-1].Andar + " | Tipo: " + ListaMesas[p.IDmesa - 1].Tipo_De_Salão + " | Lugares: " + ListaMesas[p.IDmesa - 1].Lugares);
                     }
                 }
+                Console.WriteLine("Pressione enter para voltar ao menu principal!");
                 Console.ReadLine();
             }
             void MostrarMesasDesocupadas()
@@ -229,6 +257,22 @@ namespace Projeto_OOP
                         Console.WriteLine("IDMesa: " + p.IDmesa + " | Andar: " + ListaMesas[p.IDmesa - 1].Andar + " | Tipo: " + ListaMesas[p.IDmesa - 1].Tipo_De_Salão + " | Lugares: " + ListaMesas[p.IDmesa - 1].Lugares);
                     }
                 }
+                Console.WriteLine("Pressione enter para voltar ao menu principal!");
+                Console.ReadLine();
+            }
+            void MostrarComandasAbertas()
+            {
+                List<Comanda> ListaComandas = Service.GetComandas();
+                List<Mesa> ListaMesas = Service.GetMesas();
+                Console.Clear();
+                foreach (Comanda p in ListaComandas)
+                {
+                    if (p.Estado == "OPEN")
+                    {
+                        Console.WriteLine("ID: " + p.ID + " | Atendente: " + p.Atendente + " | Cliente: " + p.Cliente + " | Horario De Chegada: " + p.HorarioDeChegada+ " | IDmesa: " + p.IDmesa);
+                    }
+                }
+                Console.WriteLine("Pressione enter para voltar ao menu principal!");
                 Console.ReadLine();
             }
         }
