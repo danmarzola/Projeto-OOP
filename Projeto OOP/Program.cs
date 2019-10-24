@@ -107,7 +107,9 @@ namespace Projeto_OOP
                 }
                 ListaComandas.Add(new Comanda(ListaComandas.Count+1, strlist[0], strlist[1], Int32.Parse(strlist[2]), DateTime.Now.ToString("dd/MM/yyyy H:mm"), "OPEN", vazia));
                 Service.GravarComanda(ListaComandas);
-                Console.WriteLine("ID: "+(ListaComandas.Count) + " | Atendente: "+ strlist[0] + " | Cliente: " + strlist[1] + " | IDMesa: " + Int32.Parse(strlist[2]) + " | HorarioDeChegada: " + DateTime.Now.ToString("dd / MM / yyyy H: mm") + " | Estado: OPEN");
+                Console.WriteLine("Comanda Criada com ID: "+(ListaComandas.Count) + " | Atendente: "+ strlist[0] + " | Cliente: " + strlist[1] + " | IDMesa: " + Int32.Parse(strlist[2]) + " | HorarioDeChegada: " + DateTime.Now.ToString("dd / MM / yyyy H: mm") + " | Estado: OPEN");
+                Console.WriteLine("Pressione enter para voltar ao menu principal!");
+                Console.ReadLine();
             }
             void AdicionarItem() {
                 List<Comanda> ListaComandas = Service.GetComandas();
