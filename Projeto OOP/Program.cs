@@ -132,13 +132,22 @@ namespace Projeto_OOP
                     Console.ReadLine();
                     return;
                 }
-                else if(ListaProdutos[Int32.Parse(strlist[1]) - 1].Estoque < 1)
+                else if (ListaProdutos.Count < Int32.Parse(strlist[1]))
+                {
+                    Console.Clear();
+                    Console.WriteLine("Produto não Existe!");
+                    Console.WriteLine("Pressione enter para voltar ao menu principal!");
+                    Console.ReadLine();
+                    return;
+                }
+                else if (ListaProdutos[Int32.Parse(strlist[1]) - 1].Estoque < 1)
                 {
                     Console.Clear();
                     Console.WriteLine("Produto Esgotado!");
                     Console.WriteLine("Pressione enter para voltar ao menu principal!");
                     Console.ReadLine();
                     return;
+
                 }
                 ListaProdutos[Int32.Parse(strlist[1]) - 1].Estoque--;
                 List<int> temp = ListaComandas[Int32.Parse(strlist[0])-1].Lancamentos;
@@ -149,6 +158,7 @@ namespace Projeto_OOP
             }
             void ExcluirItem()
             {
+                List<Produto> ListaProdutos = Service.GetProdutos();
                 List<Comanda> ListaComandas = Service.GetComandas();
                 if (ListaComandas == null)
                 {
@@ -179,11 +189,11 @@ namespace Projeto_OOP
                     Console.ReadLine();
                     return;
                 }
-                Console.WriteLine("Selecione um dos valores entre [ ] para remover");
+                Console.WriteLine("Selecione um dos numeros entre [ ] para remover");
                 int n = 0;
                 foreach (var elemento in temp)
                 {
-                    Console.WriteLine("["+n+"] "+ elemento);
+                    Console.WriteLine("["+n+"] "+ ListaProdutos[elemento-1].Nome);
                     n++;
                 }
                 String[] strlist2 = Console.ReadLine().Split(',');
@@ -214,10 +224,21 @@ namespace Projeto_OOP
                     Console.WriteLine("Pressione enter para voltar ao menu principal!");
                     Console.ReadLine();
                     return;
+                }else if (ListaComandas[Int32.Parse(strlist[0]) - 1].Estado == "CLOSE")
+                {
+                    Console.Clear();
+                    Console.WriteLine("Está comanda já foi encerrada!");
+                    Console.WriteLine("Pressione enter para voltar ao menu principal!");
+                    Console.ReadLine();
+                    return;
                 }
                 ListaComandas[Int32.Parse(strlist[0]) - 1].Estado = "CLOSE";
                 Service.GravarComanda(ListaComandas);
                 Service.GerarNF(ListaComandas[Int32.Parse(strlist[0]) - 1].Cliente, ListaComandas[Int32.Parse(strlist[0]) - 1].ID, ListaComandas[Int32.Parse(strlist[0]) - 1].Lancamentos);
+                Console.Clear();
+                Console.WriteLine("NF Gerada com Sucesso!");
+                Console.WriteLine("Pressione enter para voltar ao menu principal!");
+                Console.ReadLine();
 
             }
             void MostrarCardapio()
