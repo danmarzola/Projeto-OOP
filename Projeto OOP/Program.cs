@@ -405,22 +405,12 @@ namespace Projeto_OOP
         public static void GravarComanda(List<Comanda> input)
         {
             string path = @"C:\Users\danma\Documents\teste\comandas.txt";
-            if (!File.Exists(path))
-            {
-                File.Create(path);
-            }
-            File.WriteAllText(path, string.Empty);
             File.WriteAllText(path, JsonConvert.SerializeObject(input));
         }
 
         public static void GravarProduto(List<Produto> input)
         {
             string path = @"C:\Users\danma\Documents\teste\produtos.txt";
-            if (!File.Exists(path))
-            {
-                File.Create(path);
-            }
-            File.WriteAllText(path, string.Empty);
             File.WriteAllText(path, JsonConvert.SerializeObject(input));
         }
 
@@ -437,7 +427,7 @@ namespace Projeto_OOP
         }
         public static void GerarNF(string cliente, int IDComanda, List<int> IDprodutos)
         {
-            string path = @"C:\Users\danma\Documents\teste\Cliente_"+cliente+"_IDcomanda_"+IDComanda+"_HoraDeChegada_"+DateTime.Now.ToString("dd-MM-yyyy-H-mm") + ".txt";
+            string path = @"C:\Users\danma\Documents\teste\CLIENTE_"+ cliente +"_IDCOMANDA_"+IDComanda+"_HORADECHEGADA_"+DateTime.Now.ToString("dd-MM-yyyy-H-mm") + ".txt";
             string NF = "";
             float ValorTotal = 0;
             List<Produto> ListaDeProdutos = GetProdutos();
