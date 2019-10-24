@@ -437,7 +437,7 @@ namespace Projeto_OOP
         }
         public static void GerarNF(string cliente, int IDComanda, List<int> IDprodutos)
         {
-            string path = @"C:\Users\danma\Documents\teste\NomeCliente_"+cliente+"_IDcomanda_"+IDComanda+"_"+DateTime.Now.ToString("dd-MM-yyyy-H-mm") + ".txt";
+            string path = @"C:\Users\danma\Documents\teste\Cliente_"+cliente+"_IDcomanda_"+IDComanda+"_HoraDeChegada_"+DateTime.Now.ToString("dd-MM-yyyy-H-mm") + ".txt";
             string NF = "";
             float ValorTotal = 0;
             List<Produto> ListaDeProdutos = GetProdutos();
