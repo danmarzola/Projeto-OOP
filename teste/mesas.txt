@@ -1,0 +1,9 @@
+[
+{"ID": "1","Andar": "1","Tipo_De_Salão": "Bar","Lugares": 4},
+{"ID": "2","Andar": "2","Tipo_De_Salão": "Principal","Lugares": 2},
+{"ID": "3","Andar": "2","Tipo_De_Salão": "Principal","Lugares": 4},
+{"ID": "4","Andar": "1","Tipo_De_Salão": "Principal","Lugares": 4},
+{"ID": "5","Andar": "3","Tipo_De_Salão": "Principal","Lugares": 3},
+{"ID": "6","Andar": "5","Tipo_De_Salão": "Frente","Lugares": 2},
+{"ID": "7","Andar": "2","Tipo_De_Salão": "Fundo","Lugares": 1},
+]
