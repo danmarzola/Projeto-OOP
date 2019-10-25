@@ -71,8 +71,10 @@ namespace Projeto_OOP
             }
             void AbrirComanda()
             {
+                //Inicia Pegando as Lista de Comandas,Mesas Atuais dos Arquivos de TXT
                 List<Comanda> ListaComandas = Service.GetComandas();
                 List<Mesa> ListaMesas = Service.GetMesas();
+                //Para evitar alocar comandas a mesas que estão em uso criamos uma nova lista vazia de inteiro que representam os ID's das mesas ocupadas
                 List<int> MesasOcupadas = new List<int>();
                 if (ListaComandas == null)
                 {
@@ -82,15 +84,17 @@ namespace Projeto_OOP
                 {
                     if(p.Estado == "OPEN")
                     {
+                        //Adicionamos todas as mesas com Estado = OPEN na lista de mesas ocupadas
                         MesasOcupadas.Add(p.IDmesa);
                     }
                 }
-                //List<int> vazia = new List<int>();
+                //Iniciamos uma lista vazia de Produtos já que a comanda acabou de ser aberta
                 List<Produto> vazia = new List<Produto>();
                 Console.WriteLine("Digite no seguinte formato as informações necessarias para abrir a comanda: ");
                 Console.WriteLine("Formato: Atendente, Cliente, ID da Mesa");
                 String[] strlist = Console.ReadLine().Split(',');
-                //Fazer Condição de Proteção
+                //Condição de Proteção
+                //Checar se a mesa esta ocupada
                 if (MesasOcupadas.Contains(Int32.Parse(strlist[2])))
                 {
                     Console.Clear();
@@ -98,6 +102,7 @@ namespace Projeto_OOP
                     Console.WriteLine("Pressione enter para voltar ao menu principal!");
                     Console.ReadLine();
                     return;
+                //Checar se o ID da mesa está dentro da lista
                 }else if(ListaMesas.Count < Int32.Parse(strlist[2]))
                 {
                     Console.Clear();
@@ -106,7 +111,9 @@ namespace Projeto_OOP
                     Console.ReadLine();
                     return;
                 }
+                //Criamos um novo elemento Comanda na lista
                 ListaComandas.Add(new Comanda(ListaComandas.Count+1, strlist[0], strlist[1], Int32.Parse(strlist[2]), DateTime.Now.ToString("dd/MM/yyyy H:mm"), "OPEN", vazia));
+                //Chamamos a Função do Service para operar os TXT
                 Service.GravarComanda(ListaComandas);
                 Console.Clear();
                 Console.WriteLine("Comanda Criada com ID: "+(ListaComandas.Count) + " | Atendente: "+ strlist[0] + " | Cliente: " + strlist[1] + " | IDMesa: " + Int32.Parse(strlist[2]) + " | HorarioDeChegada: " + DateTime.Now.ToString("dd / MM / yyyy H: mm") + " | Estado: OPEN");
@@ -127,7 +134,7 @@ namespace Projeto_OOP
                 Console.WriteLine("Informe o ID da Comanda e o ID do Produto que deseja lançar");
                 Console.WriteLine("Formato: IDComanda, IDProduto");
                 String[] strlist = Console.ReadLine().Split(',');
-                //Fazer Condição de Proteção
+                //Condição de Proteção
                 if(ListaComandas.Count < Int32.Parse(strlist[0]))
                 {
                     Console.Clear();
@@ -331,7 +338,7 @@ namespace Projeto_OOP
             Valor = valor;
             Estoque = estoque;
         }
-
+        //Para facilitar as funções de insert Produto, fizemos uma função para pegar Produto de uma lista dado um certo ID
         public static Produto GetProdutoByID(int ID, List<Produto> input)
         {
             Produto saida = new Produto();
@@ -372,21 +379,7 @@ namespace Projeto_OOP
         public int IDmesa;
         public string HorarioDeChegada;
         public string Estado;
-        //public List<int> Lancamentos;
         public List<Produto> ItensConsumidos;
-        /*
-        public Comanda(int iD, string atendente, string cliente, int iDmesa, string horarioDeChegada, string estado, List<int> lancamentos)
-        {
-            ID = iD;
-            Atendente = atendente;
-            Cliente = cliente;
-            IDmesa = iDmesa;
-            HorarioDeChegada = horarioDeChegada;
-            Estado = estado;
-            Lancamentos = lancamentos;
-        }
-        */
-
 
         // Construtor vazio para permitir uma instância vazia da classe Comanda
         public Comanda()
