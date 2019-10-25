@@ -85,7 +85,8 @@ namespace Projeto_OOP
                         MesasOcupadas.Add(p.IDmesa);
                     }
                 }
-                List<int> vazia = new List<int>();
+                //List<int> vazia = new List<int>();
+                List<Produto> vazia = new List<Produto>();
                 Console.WriteLine("Digite no seguinte formato as informações necessarias para abrir a comanda: ");
                 Console.WriteLine("Formato: Atendente, Cliente, ID da Mesa");
                 String[] strlist = Console.ReadLine().Split(',');
@@ -160,9 +161,9 @@ namespace Projeto_OOP
                     return;
                 }
                 ListaProdutos[Int32.Parse(strlist[1]) - 1].Estoque--;
-                List<int> temp = ListaComandas[Int32.Parse(strlist[0])-1].Lancamentos;
-                temp.Add(Int32.Parse(strlist[1]));
-                ListaComandas[Int32.Parse(strlist[0])-1].Lancamentos = temp;
+                List<Produto> temp = ListaComandas[Int32.Parse(strlist[0])-1].ItensConsumidos;
+                temp.Add(Produto.GetProdutoByID(Int32.Parse(strlist[1]), ListaProdutos));
+                ListaComandas[Int32.Parse(strlist[0])-1].ItensConsumidos = temp;
                 Service.GravarComanda(ListaComandas);
                 Service.GravarProduto(ListaProdutos);
             }
@@ -190,7 +191,7 @@ namespace Projeto_OOP
                     Console.ReadLine();
                     return;
                 }
-                List<int> temp = ListaComandas[Int32.Parse(strlist[0]) - 1].Lancamentos;
+                List<Produto> temp = ListaComandas[Int32.Parse(strlist[0]) - 1].ItensConsumidos;
                 if(temp.Count == 0)
                 {
                     Console.Clear();
@@ -201,15 +202,15 @@ namespace Projeto_OOP
                 }
                 Console.WriteLine("Selecione um dos numeros entre [ ] para remover");
                 int n = 0;
-                foreach (var elemento in temp)
+                foreach (Produto p in temp)
                 {
-                    Console.WriteLine("["+n+"] "+ ListaProdutos[elemento-1].Nome);
+                    Console.WriteLine("["+n+"] "+ p.Nome);
                     n++;
                 }
                 String[] strlist2 = Console.ReadLine().Split(',');
                 //Fazer Condição de Proteção
                 temp.RemoveAt(Int32.Parse(strlist2[0]));
-                ListaComandas[Int32.Parse(strlist[0]) - 1].Lancamentos = temp;
+                ListaComandas[Int32.Parse(strlist[0]) - 1].ItensConsumidos = temp;
                 Service.GravarComanda(ListaComandas);
             }
             void FecharComanda()
@@ -244,7 +245,7 @@ namespace Projeto_OOP
                 }
                 ListaComandas[Int32.Parse(strlist[0]) - 1].Estado = "CLOSE";
                 Service.GravarComanda(ListaComandas);
-                Service.GerarNF(ListaComandas[Int32.Parse(strlist[0]) - 1].Cliente, ListaComandas[Int32.Parse(strlist[0]) - 1].ID, ListaComandas[Int32.Parse(strlist[0]) - 1].Lancamentos);
+                Service.GerarNF(ListaComandas[Int32.Parse(strlist[0]) - 1].Cliente, ListaComandas[Int32.Parse(strlist[0]) - 1].ID, ListaComandas[Int32.Parse(strlist[0]) - 1].ItensConsumidos);
                 Console.Clear();
                 Console.WriteLine("NF Gerada com Sucesso!");
                 Console.WriteLine("Pressione enter para voltar ao menu principal!");
@@ -330,6 +331,19 @@ namespace Projeto_OOP
             Valor = valor;
             Estoque = estoque;
         }
+
+        public static Produto GetProdutoByID(int ID, List<Produto> input)
+        {
+            Produto saida = new Produto();
+            foreach (Produto p in input)
+            {
+                if (p.ID == ID)
+                {
+                    saida = p;
+                }
+            }
+            return saida;
+        }
     }
     class Mesa
     {
@@ -358,8 +372,9 @@ namespace Projeto_OOP
         public int IDmesa;
         public string HorarioDeChegada;
         public string Estado;
-        public List<int> Lancamentos;
-
+        //public List<int> Lancamentos;
+        public List<Produto> ItensConsumidos;
+        /*
         public Comanda(int iD, string atendente, string cliente, int iDmesa, string horarioDeChegada, string estado, List<int> lancamentos)
         {
             ID = iD;
@@ -370,10 +385,23 @@ namespace Projeto_OOP
             Estado = estado;
             Lancamentos = lancamentos;
         }
+        */
+
 
         // Construtor vazio para permitir uma instância vazia da classe Comanda
         public Comanda()
         {
+        }
+
+        public Comanda(int iD, string atendente, string cliente, int iDmesa, string horarioDeChegada, string estado, List<Produto> itensConsumidos)
+        {
+            ID = iD;
+            Atendente = atendente;
+            Cliente = cliente;
+            IDmesa = iDmesa;
+            HorarioDeChegada = horarioDeChegada;
+            Estado = estado;
+            ItensConsumidos = itensConsumidos;
         }
     }
     class Service
@@ -425,16 +453,16 @@ namespace Projeto_OOP
             List<Comanda> lista = JsonConvert.DeserializeObject<List<Comanda>>(File.ReadAllText(path));
             return lista;
         }
-        public static void GerarNF(string cliente, int IDComanda, List<int> IDprodutos)
+        public static void GerarNF(string cliente, int IDComanda, List<Produto> inputProdutos)
         {
             string path = @"C:\Users\danma\Documents\teste\CLIENTE_"+ cliente +"_IDCOMANDA_"+IDComanda+"_HORADECHEGADA_"+DateTime.Now.ToString("dd-MM-yyyy-H-mm") + ".txt";
             string NF = "";
             float ValorTotal = 0;
             List<Produto> ListaDeProdutos = GetProdutos();
-            foreach (var i in IDprodutos)
+            foreach (Produto p in inputProdutos)
             {
-                NF += "Produto: " +ListaDeProdutos[i-1].Nome+ "        Valor: "+ListaDeProdutos[i - 1].Valor+"\n";
-                ValorTotal += ListaDeProdutos[i - 1].Valor;
+                NF += "Produto: " +p.Nome+ "        Valor: "+p.Valor+"\n";
+                ValorTotal += p.Valor;
             }
             NF += "Valor Total = " + ValorTotal;
             File.WriteAllText(path, NF);
