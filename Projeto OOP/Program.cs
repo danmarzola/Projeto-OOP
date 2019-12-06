@@ -171,6 +171,7 @@ namespace Projeto_OOP
                     Console.ReadLine();
                     return;
                 }
+            
                 else if (ListaProdutos[Int32.Parse(strlist[1]) - 1].Estoque < 1)
                 {
                     Console.Clear();
@@ -178,6 +179,15 @@ namespace Projeto_OOP
                     Console.WriteLine("Pressione enter para voltar ao menu principal!");
                     Console.ReadLine();
                     return;
+                }
+                try
+                {
+                    ListaProdutos[Int32.Parse(strlist[1]) - 1].Estoque--;
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Estoque não pode ser negativo");
+
                 }
                 ListaProdutos[Int32.Parse(strlist[1]) - 1].Estoque--;
                 List<Produto> temp = ListaComandas[Int32.Parse(strlist[0])-1].ItensConsumidos;
@@ -353,13 +363,22 @@ namespace Projeto_OOP
                 Console.WriteLine("Informe o ID do Produto e a Quantidade Atual em estoque");
                 Console.WriteLine("Formato: IDProduto, Quantidade");
                 String[] strlist = Console.ReadLine().Split(',');
-                if (ListaProdutos.Count < Int32.Parse(strlist[0]))
+                if (ListaProdutos.Count <= Int32.Parse(strlist[0]))
                 {
                     Console.Clear();
                     Console.WriteLine("Produto não Existe!");
                     Console.WriteLine("Pressione enter para voltar ao menu principal!");
                     Console.ReadLine();
                     return;
+                }
+                try
+                {
+                    ListaProdutos[Int32.Parse(strlist[1]) - 1].Estoque--;
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Estoque não pode ser negativo");
+
                 }
                 ListaProdutos[Int32.Parse(strlist[0]) - 1].Estoque = Int32.Parse(strlist[1]);
                 Service.GravarProduto(ListaProdutos);
@@ -479,6 +498,15 @@ namespace Projeto_OOP
             {
                 File.Create(path);
             }
+            try
+            {
+                JsonConvert.DeserializeObject<List<Produto>>(File.ReadAllText(path));
+            }
+            catch (Exception)
+            {
+              throw new Exception("Falha no Deserialize");
+
+            }
             // read file into a string and deserialize JSON to a type
             List<Produto> lista = JsonConvert.DeserializeObject<List<Produto>>(File.ReadAllText(path));
             return lista;
@@ -492,6 +520,15 @@ namespace Projeto_OOP
             {
                 File.Create(path);
             }
+            try
+            {
+                JsonConvert.DeserializeObject<List<Fornecedor>>(File.ReadAllText(path));
+            }
+            catch (Exception)
+            {
+                throw new Exception("Falha no Deserialize");
+
+            }
             // read file into a string and deserialize JSON to a type
             List<Fornecedor> lista = JsonConvert.DeserializeObject<List<Fornecedor>>(File.ReadAllText(path));
             foreach (Fornecedor p in lista)
@@ -501,7 +538,6 @@ namespace Projeto_OOP
                     Extraida2.Add(k);
                 }
             }
-
             return Extraida2;
         }
 
@@ -511,6 +547,15 @@ namespace Projeto_OOP
             if (!File.Exists(path))
             {
                 File.Create(path);
+            }
+            try
+            {
+                JsonConvert.DeserializeObject<List<Mesa>>(File.ReadAllText(path));
+            }
+            catch (Exception)
+            {
+                throw new Exception("Falha no Deserialize");
+
             }
             // read file into a string and deserialize JSON to a type
             List<Mesa> lista = JsonConvert.DeserializeObject<List<Mesa>>(File.ReadAllText(path));
@@ -523,6 +568,15 @@ namespace Projeto_OOP
             if (!File.Exists(path))
             {
                 File.Create(path);
+            }
+            try
+            {
+                JsonConvert.DeserializeObject<List<Fornecedor>>(File.ReadAllText(path));
+            }
+            catch (Exception)
+            {
+                throw new Exception("Falha no Deserialize");
+
             }
             // read file into a string and deserialize JSON to a type
             List<Fornecedor> lista = JsonConvert.DeserializeObject<List<Fornecedor>>(File.ReadAllText(path));
@@ -549,6 +603,15 @@ namespace Projeto_OOP
                 File.Create(path);
             }
             // read file into a string and deserialize JSON to a type
+            try
+            {
+                JsonConvert.DeserializeObject<List<Comanda>>(File.ReadAllText(path));
+            }
+            catch (Exception)
+            {
+                throw new Exception("Falha no Deserialize");
+
+            }
             List<Comanda> lista = JsonConvert.DeserializeObject<List<Comanda>>(File.ReadAllText(path));
             return lista;
         }
