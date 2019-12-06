@@ -474,7 +474,7 @@ namespace Projeto_OOP
     {
         public static List<Produto> GetProdutos()
         {
-            string path = @"C:\Users\danma\Documents\teste\produtos.txt";
+            string path = @"produtos.txt";
             if (!File.Exists(path))
             {
                 File.Create(path);
@@ -487,7 +487,7 @@ namespace Projeto_OOP
         {
             List<Produto> Extraida1 = new List<Produto>();
             List<Produto> Extraida2 = new List<Produto>();
-            string path = @"C:\Users\danma\Documents\teste\fornecedores.txt";
+            string path = @"fornecedores.txt";
             if (!File.Exists(path))
             {
                 File.Create(path);
@@ -507,7 +507,7 @@ namespace Projeto_OOP
 
         public static List<Mesa> GetMesas()
         {
-            string path = @"C:\Users\danma\Documents\teste\mesas.txt";
+            string path = @"mesas.txt";
             if (!File.Exists(path))
             {
                 File.Create(path);
@@ -519,7 +519,7 @@ namespace Projeto_OOP
 
         public static List<Fornecedor> GetFornecedores()
         {
-            string path = @"C:\Users\danma\Documents\teste\fornecedores.txt";
+            string path = @"fornecedores.txt";
             if (!File.Exists(path))
             {
                 File.Create(path);
@@ -531,19 +531,19 @@ namespace Projeto_OOP
 
         public static void GravarComanda(List<Comanda> input)
         {
-            string path = @"C:\Users\danma\Documents\teste\comandas.txt";
+            string path = @"comandas.txt";
             File.WriteAllText(path, JsonConvert.SerializeObject(input));
         }
 
         public static void GravarProduto(List<Produto> input)
         {
-            string path = @"C:\Users\danma\Documents\teste\produtos.txt";
+            string path = @"produtos.txt";
             File.WriteAllText(path, JsonConvert.SerializeObject(input));
         }
 
         public static List<Comanda> GetComandas()
         {
-            string path = @"C:\Users\danma\Documents\teste\comandas.txt";
+            string path = @"comandas.txt";
             if (!File.Exists(path))
             {
                 File.Create(path);
@@ -554,7 +554,7 @@ namespace Projeto_OOP
         }
         public static void GerarNF(string cliente, int IDComanda, List<Produto> inputProdutos)
         {
-            string path = @"C:\Users\danma\Documents\teste\CLIENTE_"+ cliente +"_IDCOMANDA_"+IDComanda+"_HORADECHEGADA_"+DateTime.Now.ToString("dd-MM-yyyy-H-mm") + ".txt";
+            string path = @"CLIENTE_"+ cliente +"_IDCOMANDA_"+IDComanda+"_HORADECHEGADA_"+DateTime.Now.ToString("dd-MM-yyyy-H-mm") + ".txt";
             string NF = "";
             float ValorTotal = 0;
             List<Produto> ListaDeProdutos = GetProdutos();
