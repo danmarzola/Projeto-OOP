@@ -31,8 +31,11 @@ namespace Projeto_OOP
             Console.WriteLine("(6) Mostrar Mesas Ocupadas");
             Console.WriteLine("(7) Mostrar Mesas Desocupadas");
             Console.WriteLine("(8) Mostrar Comandas Abertas");
-            Console.WriteLine("(9) Limpar Console");
-            Console.WriteLine("(10) Encerrar Terminal");
+            Console.WriteLine("(9) Mostrar Fornecedores");
+            Console.WriteLine("(10) Mostrar Produtos dos Fornecedores");
+            Console.WriteLine("(11) Alterar Estoque de um item");
+            Console.WriteLine("(12) Limpar Console");
+            Console.WriteLine("(13) Encerrar Terminal");
             Console.Write("\r\nSelecione uma das opções usando um numero inteiro:");
 
             switch (Console.ReadLine())
@@ -62,9 +65,18 @@ namespace Projeto_OOP
                     MostrarComandasAbertas();
                     return true;
                 case "9":
-                    Console.Clear();
+                    MostrarFornecedores();
                     return true;
                 case "10":
+                    MostrarProdutosDosFornecedores();
+                    return true;
+                case "11":
+                    AlterarEstoque();
+                    return true;            
+                case "12":
+                    Console.Clear();
+                    return true;
+                case "13":
                     return false;
                 default:
                     return true;
@@ -302,7 +314,6 @@ namespace Projeto_OOP
             void MostrarComandasAbertas()
             {
                 List<Comanda> ListaComandas = Service.GetComandas();
-                List<Mesa> ListaMesas = Service.GetMesas();
                 Console.Clear();
                 foreach (Comanda p in ListaComandas)
                 {
@@ -311,6 +322,48 @@ namespace Projeto_OOP
                         Console.WriteLine("ID: " + p.ID + " | Atendente: " + p.Atendente + " | Cliente: " + p.Cliente + " | Horario De Chegada: " + p.HorarioDeChegada+ " | IDmesa: " + p.IDmesa);
                     }
                 }
+                Console.WriteLine("Pressione enter para voltar ao menu principal!");
+                Console.ReadLine();
+            }
+            void MostrarFornecedores()
+            {
+                List<Fornecedor> ListaFornecedores = Service.GetFornecedores();
+                Console.Clear();
+                foreach (Fornecedor p in ListaFornecedores)
+                {
+                    Console.WriteLine("ID: " + p.ID + " | Fornecedor: " + p.Nome + " | Localização: " + p.Localizacao);
+                }
+                Console.WriteLine("Pressione enter para voltar ao menu principal!");
+                Console.ReadLine();
+            }
+            void MostrarProdutosDosFornecedores()
+            {
+                List<Produto> ListaProdutos = Service.GetProdutosFromFornecedores();
+                Console.Clear();
+                foreach (Produto p in ListaProdutos)
+                {
+                    Console.WriteLine("ID: " + p.ID + " | Nome: " + p.Nome + " | Valor: " + p.Valor + " | Descricao: " + p.Descricao + " | Estoque: " + p.Estoque);
+                }
+                Console.WriteLine("Pressione enter para voltar ao menu principal!");
+                Console.ReadLine();
+            }
+            void AlterarEstoque()
+            {
+                List<Produto> ListaProdutos = Service.GetProdutos();
+                Console.WriteLine("Informe o ID do Produto e a Quantidade Atual em estoque");
+                Console.WriteLine("Formato: IDProduto, Quantidade");
+                String[] strlist = Console.ReadLine().Split(',');
+                if (ListaProdutos.Count < Int32.Parse(strlist[0]))
+                {
+                    Console.Clear();
+                    Console.WriteLine("Produto não Existe!");
+                    Console.WriteLine("Pressione enter para voltar ao menu principal!");
+                    Console.ReadLine();
+                    return;
+                }
+                ListaProdutos[Int32.Parse(strlist[0]) - 1].Estoque = Int32.Parse(strlist[1]);
+                Service.GravarProduto(ListaProdutos);
+                Console.WriteLine("Estoque Alterado");
                 Console.WriteLine("Pressione enter para voltar ao menu principal!");
                 Console.ReadLine();
             }
@@ -430,6 +483,27 @@ namespace Projeto_OOP
             List<Produto> lista = JsonConvert.DeserializeObject<List<Produto>>(File.ReadAllText(path));
             return lista;
         }
+        public static List<Produto> GetProdutosFromFornecedores()
+        {
+            List<Produto> Extraida1 = new List<Produto>();
+            List<Produto> Extraida2 = new List<Produto>();
+            string path = @"C:\Users\danma\Documents\teste\fornecedores.txt";
+            if (!File.Exists(path))
+            {
+                File.Create(path);
+            }
+            // read file into a string and deserialize JSON to a type
+            List<Fornecedor> lista = JsonConvert.DeserializeObject<List<Fornecedor>>(File.ReadAllText(path));
+            foreach (Fornecedor p in lista)
+            {
+                Extraida1 = p.ProdutosFornecidos;
+                foreach (Produto k in Extraida1) {
+                    Extraida2.Add(k);
+                }
+            }
+
+            return Extraida2;
+        }
 
         public static List<Mesa> GetMesas()
         {
@@ -440,6 +514,18 @@ namespace Projeto_OOP
             }
             // read file into a string and deserialize JSON to a type
             List<Mesa> lista = JsonConvert.DeserializeObject<List<Mesa>>(File.ReadAllText(path));
+            return lista;
+        }
+
+        public static List<Fornecedor> GetFornecedores()
+        {
+            string path = @"C:\Users\danma\Documents\teste\fornecedores.txt";
+            if (!File.Exists(path))
+            {
+                File.Create(path);
+            }
+            // read file into a string and deserialize JSON to a type
+            List<Fornecedor> lista = JsonConvert.DeserializeObject<List<Fornecedor>>(File.ReadAllText(path));
             return lista;
         }
 
