@@ -316,6 +316,26 @@ namespace Projeto_OOP
             }
         }
     }
+    class Fornecedor
+    {
+        public int ID;
+        public string Nome;
+        public string Localizacao;
+        public List<Produto> ProdutosFornecidos;
+
+        // Construtor vazio para permitir uma instância vazia da classe Produto
+        public Fornecedor()
+        {
+        }
+
+        public Fornecedor(int iD, string nome, string localizacao, List<Produto> produtosFornecidos)
+        {
+            ID = iD;
+            Nome = nome;
+            Localizacao = localizacao;
+            ProdutosFornecidos = produtosFornecidos;
+        }
+    }
     class Produto
     {
         public int ID;
