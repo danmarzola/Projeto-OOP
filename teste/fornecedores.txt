@@ -1,0 +1,6 @@
+[
+{"ID":1,"Nome":"Produto X","Localizacao":"Rua Direita Esquerda 1234 - 75l","ProdutosFornecidos":[{"ID":1,"Nome":"Produto X","Descricao":"Este Produto é incrivel","Valor":50.0,"Estoque":45}]},
+{"ID":2,"Nome":"Produto Y","Localizacao":"Rua Direita Esquerda 1234 - 75l","ProdutosFornecidos":[{"ID":2,"Nome":"Produto Y","Descricao":"Este Produto é incrivel","Valor":50.0,"Estoque":0}]},
+{"ID":3,"Nome":"Produto Z","Localizacao":"Rua Direita Esquerda 1234 - 75l","ProdutosFornecidos":[{"ID":3,"Nome":"Produto Z","Descricao":"Este Produto é incrivel","Valor":30.0,"Estoque":10}]},
+{"ID":4,"Nome":"Produto K","Localizacao":"Rua Direita Esquerda 1234 - 75l","ProdutosFornecidos":[{"ID":4,"Nome":"Produto K","Descricao":"Este Produto é incrivel","Valor":30.0,"Estoque":10}]},
+{"ID":5,"Nome":"Produto L","Localizacao":"Rua Direita Esquerda 1234 - 75l","ProdutosFornecidos":[{"ID":5,"Nome":"Produto L","Descricao":"Este Produto é incrivel","Valor":30.0,"Estoque":10},{"ID":6,"Nome":"Produto A","Descricao":"Este Produto é incrivel","Valor":30.0,"Estoque":10}]}]
